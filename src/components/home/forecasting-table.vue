@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(lineItem, index) in lineItemData" :key="index">
+        <tr v-for="(lineItem, index) in lineItems" :key="index">
           <td v-for="(header, index) in headers" :key="index">
             {{lineItem[header.field]}}
           </td>
@@ -20,300 +20,57 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import lineItemHeaders from './lineItemHeaders.js'
+
 export default {
+  props: {
+    showMonthlySummary: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
-      headers: [
-        {
-          field: 'productItemName',
-          label: 'Product'
-        },
-        {
-          field: 'optionItemName',
-          label: 'Option'
-        },
-        {
-          field: 'attributes',
-          label: 'Attribute'
-        },
-        {
-          field: 'revenueType',
-          label: 'Revenue Type'
-        },
-        {
-          field: 'qty',
-          label: 'QTY'
-        },
-        {
-          field: 'unitPrice',
-          label: 'Unit Price'
-        },
-        {
-          field: 'startMonth',
-          label: 'Start Month'
-        },
-        {
-          field: 'months',
-          label: 'Months'
-        },
-        {
-          field: 'revenueRecognitionName',
-          label: 'Revenue Recognition'
-        },
-        {
-          field: 'committed',
-          label: 'Commited'
-        }
-      ],
-      lineItemData: [
-        {
-          unitPrice: 95,
-          startMonth: "2/1/2019",
-          revenueType: "MRC",
-          revenueRecognitionName: null,
-          revenueRecognitionId: null,
-          qty: 1,
-          productItemName: "Captio User Delegation",
-          productItemId: "a01A000001gmFXZIA2",
-          productFLIId: "a2m2G000000AJKQQA4",
-          priorMRR: null,
-          optionItemName: null,
-          optionItemId: null,
-          optionFLIId: null,
-          monthsVR: null,
-          monthsNRC: null,
-          monthsMRC: null,
-          months: 18,
-          displayUnitPrice: "$95.00",
-          displayQty: "1",
-          displayPriorMRR: null,
-          committed: "No",
-          attributesWithValues: null,
-          attributes: null
-        },
-        {
-          unitPrice: 55,
-          startMonth: "3/1/2019",
-          revenueType: "NRC",
-          revenueRecognitionName: null,
-          revenueRecognitionId: null,
-          qty: 1,
-          productItemName: "TNS Link",
-          productItemId: "a01A000001utm3RIAQ",
-          productFLIId: "a2m2G000009H0fHQAS",
-          priorMRR: null,
-          optionItemName: null,
-          optionItemId: null,
-          optionFLIId: null,
-          monthsVR: null,
-          monthsNRC: null,
-          monthsMRC: null,
-          months: 12,
-          displayUnitPrice: "$55.00",
-          displayQty: "1",
-          displayPriorMRR: null,
-          committed: "No",
-          attributesWithValues: null,
-          attributes: null
-        },
-        {
-          unitPrice: 100,
-          startMonth: "2/1/2019",
-          revenueType: "MRC",
-          revenueRecognitionName: null,
-          revenueRecognitionId: null,
-          qty: 1,
-          productItemName: "TNS Link",
-          productItemId: "a01A000001utm3RIAQ",
-          productFLIId: "a2m2G000009H0fIQAS",
-          priorMRR: null,
-          optionItemName: null,
-          optionItemId: null,
-          optionFLIId: null,
-          monthsVR: null,
-          monthsNRC: null,
-          monthsMRC: null,
-          months: 24,
-          displayUnitPrice: "$100.00",
-          displayQty: "1",
-          displayPriorMRR: null,
-          committed: "No",
-          attributesWithValues: null,
-          attributes: null
-        }
-      ],
-      yearsData: [
-        {
-          year: "2019",
-          summaryAmount: "$2,190.80",
-          lineData: [
-            {
-              recordId: "a2m2G000000AJKQQA4",
-              amount: "$1,045.00"
-            },
-            {
-              recordId: "a2m2G000009H0fIQAS",
-              amount: "$1,100.00"
-            },
-            {
-              recordId: "a2m2G000009H0fHQAS",
-              amount: "$45.80"
-            }
-          ]
-        },
-        {
-          year: "2020",
-          summaryAmount: "$1,874.20",
-          lineData: [
-            {
-              recordId: "a2m2G000000AJKQQA4",
-              amount: "$665.00"
-            },
-            {
-              recordId: "a2m2G000009H0fIQAS",
-              amount: "$1,200.00"
-            },
-            {
-              recordId: "a2m2G000009H0fHQAS",
-              amount: "$9.20"
-            }
-          ]
-        },
-        {
-          year: "2021",
-          summaryAmount: "$100.00",
-          lineData: [
-            {
-              recordId: "a2m2G000009H0fIQAS",
-              amount: "$100.00"
-            }
-          ]
-        }
-      ],
-      monthlyData: {
-        summaryAmount: [
-          "$195.00",
-          "$199.58",
-          "$199.58",
-          "$199.58",
-          "$199.58",
-          "$199.58",
-          "$199.58",
-          "$199.58",
-          "$199.58",
-          "$199.58",
-          "$199.58",
-          "$199.58",
-          "$199.62",
-          "$195.00",
-          "$195.00",
-          "$195.00",
-          "$195.00",
-          "$195.00",
-          "$100.00",
-          "$100.00",
-          "$100.00",
-          "$100.00",
-          "$100.00",
-          "$100.00"
-        ],
-        startYear: 2019,
-        startMonth: 2,
-        linesData: [
-          {
-            startYear: 2019,
-            startMonth: 2,
-            recordId: "a2m2G000000AJKQQA4",
-            data: [
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00",
-              "$95.00"
-            ]
-          },
-          {
-            startYear: 2019,
-            startMonth: 2,
-            recordId: "a2m2G000009H0fIQAS",
-            data: [
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00",
-              "$100.00"
-            ]
-          },
-          {
-            startYear: 2019,
-            startMonth: 3,
-            recordId: "a2m2G000009H0fHQAS",
-            data: [
-              "$4.58",
-              "$4.58",
-              "$4.58",
-              "$4.58",
-              "$4.58",
-              "$4.58",
-              "$4.58",
-              "$4.58",
-              "$4.58",
-              "$4.58",
-              "$4.58",
-              "$4.62"
-            ]
-          }
-        ]
-      },
-      lineItemMapData: {},
-      yearlyDataHeaders: [],
+      headers: [],
+      data: [],
       monthlyDataHeaders: [],
+      yearlyDataHeaders: [],
       lineItemYearlyMapData: {},
       lineItemMonthlyMapData: {}
     }
   },
   methods: {
+    getHeaders(type) {
+      if (type === 'monthly') {
+        return lineItemHeaders.concat(this.monthlyDataHeaders)
+      } else if(type === 'yearly') {
+        return lineItemHeaders.concat(this.yearlyDataHeaders)
+      } else {
+        return lineItemHeaders
+      }
+    },
+    getData(type) {
+      if (type === 'monthly') {
+        return this.lineItems.map((lineItem) => {
+          return Object.assign(lineItem, this.lineItemMonthlyMapData[lineItem.productFLIId])
+        })
+      } else if(type === 'yearly') {
+        return this.lineItems.map((lineItem) => {
+          return Object.assign(lineItem, this.lineItemYearlyMapData[lineItem.productFLIId])
+        })
+      } else {
+        return this.lineItems
+      }
+    },
     createLineItemsMapData () {
-      this.lineItemData.forEach((itemData) => {
-        this.lineItemMapData[itemData.productFLIId] = itemData
+      this.lineItems.forEach((itemData) => {
         this.lineItemYearlyMapData[itemData.productFLIId] = {}
         this.lineItemMonthlyMapData[itemData.productFLIId] = {}
       })
     },
     createLineItemsYearlyData () {
-      this.yearsData.forEach((data) => {
+      this.summaryYears.forEach((data) => {
         this.yearlyDataHeaders.push({
           field: data.year,
           label: data.year
@@ -325,10 +82,10 @@ export default {
       })
     },
     createLineItemsMonthlyData () {
-      let year = this.monthlyData.startYear
-      let month = this.monthlyData.startMonth
+      let year = this.summaryMonths.startYear
+      let month = this.summaryMonths.startMonth
 
-      this.monthlyData.summaryAmount.forEach(() => {
+      this.summaryMonths.summaryAmount.forEach(() => {
         let field = `${month}/1/${year}`
         this.monthlyDataHeaders.push({
           field: field,
@@ -342,7 +99,7 @@ export default {
         }
       })
 
-      this.monthlyData.linesData.forEach((lineData) => {
+      this.summaryMonths.linesData.forEach((lineData) => {
         let year = lineData.startYear
         let month = lineData.startMonth
 
@@ -359,17 +116,32 @@ export default {
           }
         })
       })
-
     }
   },
-  mounted () {
-    this.createLineItemsMapData()
-    this.createLineItemsYearlyData()
-    this.createLineItemsMonthlyData()
+  watch: {
+    lineItems() {
+      this.createLineItemsMapData()
+      this.createLineItemsMonthlyData()
+      this.createLineItemsYearlyData()
 
-    this.headers = this.headers.concat(this.monthlyDataHeaders)
-    console.log('headers', this.monthlyDataHeaders)
-    console.log('monthly data', this.lineItemMonthlyMapData)
+      let type = this.showMonthlySummary ? 'monthly' : 'yearly'
+
+      this.headers = this.getHeaders(type)
+      this.data = this.getData(type)
+    },
+    showMonthlySummary() {
+      let type = this.showMonthlySummary ? 'monthly' : 'yearly'
+
+      this.headers = this.getHeaders(type)
+      this.data = this.getData(type)
+    }
+  },
+  computed: {
+    ...mapGetters({
+      lineItems: 'home/lineItems',
+      summaryYears: 'home/summaryYears',
+      summaryMonths: 'home/summaryMonths'
+    })
   }
 }
 </script>

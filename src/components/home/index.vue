@@ -19,7 +19,7 @@
               </svg>
               <span>Show full attributes</span>
             </li>
-            <li class="item selected">
+            <li class="item" :class="{'selected': showMonthlySummary}" @click="selectMonthlySummary()">
               <svg class="icon">
                 <use xlink:href="./../../assets/img/icons.svg#checkmark"></use>
               </svg>
@@ -32,12 +32,13 @@
       </div>
     </div>
     <div class="table-container">
-      <forecasting-table></forecasting-table>
+      <forecasting-table :showMonthlySummary="showMonthlySummary"></forecasting-table>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import ForecastingTable from './forecasting-table.vue'
 
 export default {
@@ -45,7 +46,24 @@ export default {
     ForecastingTable
   },
   data () {
-    return {}
+    return {
+      showMonthlySummary: false
+    }
+  },
+  methods: {
+    ...mapActions({
+      fetchLineItems: 'home/fetchLineItems',
+      fetchMonthlySummary: 'home/fetchMonthlySummary',
+      fetchYearlySummary: 'home/fetchYearlySummary'
+    }),
+    selectMonthlySummary () {
+      this.showMonthlySummary = !this.showMonthlySummary
+    }
+  },
+  mounted () {
+    this.fetchLineItems()
+    this.fetchMonthlySummary()
+    this.fetchYearlySummary()
   }
 }
 </script>

@@ -62,6 +62,7 @@ export default {
         }
         .name {
           font-size: 16px;
+          font-weight: bold;
           color: #ffffff;
           padding-left: 6px;
         }
