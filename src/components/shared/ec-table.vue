@@ -64,9 +64,9 @@ export default {
 <style lang="scss" scoped>
   .ec-table-container {
     overflow: scroll;
+    margin: 10px 30px;
     table {
       border-collapse: collapse;
-      // margin: 10px 30px;
       thead {
         height: 51px;
         font-size: 13px;
@@ -121,6 +121,34 @@ export default {
           }
         }
       }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .ec-table-container {
+      margin: 10px;
+      table {
+      border-collapse: collapse;
+      thead {
+        th {
+          padding-left: 5px;
+          padding-right: 5px;
+          min-width: 60px;
+          &:first-child {
+            padding-left: 5px;
+          }
+        }
+      }
+      tbody {
+        td {
+          padding-left: 5px;
+          padding-right: 5px;
+          &:first-child {
+            padding-left: 5px;
+          }
+        }
+      }
+    }
     }
   }
 </style>

@@ -87,4 +87,17 @@ export default {
       padding: 0 30px;
     }
   }
+
+  @media (max-width: 768px) {
+    .home-container {
+      .name-container {
+        padding: 0 15px;
+        height: 50px;
+      }
+      .view-container {
+        height: 50px;
+        padding: 0 15px;
+      }
+    }
+  }
 </style>
