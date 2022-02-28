@@ -1,29 +1,16 @@
 <template>
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th v-for="(header, index) in headers" :key="index">
-            {{header.label}}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(lineItem, index) in lineItems" :key="index">
-          <td v-for="(header, index) in headers" :key="index">
-            {{lineItem[header.field]}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <ec-table :headers="headers" :rowItems="rowItems"></ec-table>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import ecTable from '../shared/ec-table.vue'
 import lineItemHeaders from './lineItemHeaders.js'
 
 export default {
+  components: {
+    ecTable
+  },
   props: {
     showMonthlySummary: {
       type: Boolean,
@@ -33,7 +20,7 @@ export default {
   data () {
     return {
       headers: [],
-      data: [],
+      rowItems: [],
       monthlyDataHeaders: [],
       yearlyDataHeaders: [],
       lineItemYearlyMapData: {},
@@ -127,13 +114,13 @@ export default {
       let type = this.showMonthlySummary ? 'monthly' : 'yearly'
 
       this.headers = this.getHeaders(type)
-      this.data = this.getData(type)
+      this.rowItems = this.getData(type)
     },
     showMonthlySummary() {
       let type = this.showMonthlySummary ? 'monthly' : 'yearly'
 
       this.headers = this.getHeaders(type)
-      this.data = this.getData(type)
+      this.rowItems = this.getData(type)
     }
   },
   computed: {
@@ -145,55 +132,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .table-container {
-    overflow: scroll;
-    table {
-      border-collapse: collapse;
-      margin: 10px 30px;
-      thead {
-        height: 51px;
-        font-size: 13px;
-        color: #0a0a0a;
-        border-bottom: 2px solid #c3eb5b;
-        th {
-          min-width: 93px;
-          padding-left: 35px;
-          text-align: left;
-          position: sticky;
-          top: 0;
-          z-index: 1;
-          background-color: #ffffff;
-          &:first-child {
-            padding-left: 25px;
-            position: sticky;
-            left: 0;
-            z-index: 2;
-          }
-        }
-      }
-      tbody {
-        tr {
-          border-bottom: 1px solid #ededed;
-        }
-        td {
-          height: 53px;
-          padding-left: 35px;
-          color: #5f5f5f;
-          font-size: 13px;
-          position: sticky;
-          top: 0;
-          z-index: 1;
-          background-color: #ffffff;
-          &:first-child {
-            padding-left: 25px;
-            position: sticky;
-            left: 0;
-            z-index: 2;
-          }
-        }
-      }
-    }
-  }
-</style>
