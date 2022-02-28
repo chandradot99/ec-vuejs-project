@@ -4,14 +4,19 @@
       <thead>
         <tr>
           <th v-for="(header, index) in headers" :key="index">
-            {{header.label}}
+            {{(header.type === 'date') ? formatDate(header.label) : header.label}}
           </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(lineItem, index) in rowItems" :key="index">
           <td v-for="(header, index) in headers" :key="index">
-            {{lineItem[header.field]}}
+            <span v-if="$scopedSlots[header.field]">
+              <slot :name="header.field" :rowData="lineItem"></slot>
+            </span>
+            <span v-else>
+              {{lineItem[header.field] || (header.emptyLabel || '-')}}
+            </span>
           </td>
         </tr>
       </tbody>
@@ -20,6 +25,8 @@
 </template>
 
 <script>
+import { format } from 'date-fns'
+
 export default {
   props: {
     headers: {
@@ -30,6 +37,11 @@ export default {
       type: Array,
       required: true
     }
+  },
+  methods: {
+    formatDate(date) {
+      return format(new Date(date), 'MMM yyyy')
+    }
   }
 }
 </script>
@@ -39,7 +51,7 @@ export default {
     overflow: scroll;
     table {
       border-collapse: collapse;
-      margin: 10px 30px;
+      // margin: 10px 30px;
       thead {
         height: 51px;
         font-size: 13px;
@@ -53,6 +65,8 @@ export default {
           top: 0;
           z-index: 1;
           background-color: #ffffff;
+          white-space: nowrap;
+          padding-right: 15px;
           &:first-child {
             padding-left: 25px;
             position: sticky;
@@ -74,6 +88,8 @@ export default {
           top: 0;
           z-index: 1;
           background-color: #ffffff;
+          white-space: nowrap;
+          padding-right: 15px;
           &:first-child {
             padding-left: 25px;
             position: sticky;

@@ -1,42 +1,52 @@
 export default [
   {
     field: 'productItemName',
-    label: 'Product'
+    label: 'Product',
+    emptyLabel: 'N/A'
   },
   {
     field: 'optionItemName',
-    label: 'Option'
+    label: 'Option',
+    emptyLabel: 'N/A'
   },
   {
     field: 'attributes',
-    label: 'Attribute'
+    label: 'Attribute',
+    emptyLabel: 'N/A'
   },
   {
     field: 'revenueType',
-    label: 'Revenue Type'
+    label: 'Revenue Type',
+    emptyLabel: 'N/A'
   },
   {
     field: 'qty',
-    label: 'QTY'
+    label: 'QTY',
+    emptyLabel: 'N/A'
   },
   {
     field: 'unitPrice',
-    label: 'Unit Price'
+    label: 'Unit Price',
+    emptyLabel: 'N/A'
   },
   {
     field: 'startMonth',
-    label: 'Start Month'
+    label: 'Start Month',
+    emptyLabel: 'N/A'
   },
   {
     field: 'months',
-    label: 'Months'
+    label: 'Months',
+    emptyLabel: 'N/A'
   },
   {
     field: 'revenueRecognitionName',
-    label: 'Revenue Recognition'
+    label: 'Revenue Recognition',
+    emptyLabel: 'N/A'
   },
   {
     field: 'committed',
-    label: 'Commited'
+    label: 'Commited',
+    emptyLabel: 'N/A'
   }
 ]

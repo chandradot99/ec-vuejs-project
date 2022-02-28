@@ -1,9 +1,14 @@
 <template>
-  <ec-table :headers="headers" :rowItems="rowItems"></ec-table>
+  <ec-table :headers="headers" :rowItems="rowItems">
+    <template slot="startMonth" slot-scope="slotProps">
+      {{formatDate(slotProps.rowData.startMonth)}}
+    </template>
+  </ec-table>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { format } from 'date-fns'
 import ecTable from '../shared/ec-table.vue'
 import lineItemHeaders from './lineItemHeaders.js'
 
@@ -28,6 +33,9 @@ export default {
     }
   },
   methods: {
+    formatDate(date) {
+      return format(new Date(date), 'MMM yyyy')
+    },
     getHeaders(type) {
       if (type === 'monthly') {
         return lineItemHeaders.concat(this.monthlyDataHeaders)
@@ -76,7 +84,8 @@ export default {
         let field = `${month}/1/${year}`
         this.monthlyDataHeaders.push({
           field: field,
-          label: field
+          label: field,
+          type: 'date'
         })
         if (month === 12) {
           month = 1,

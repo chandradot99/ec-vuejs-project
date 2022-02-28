@@ -19,7 +19,6 @@ export default {
       state.lineItems = payload
     },
     SET_MONTHLY_SUMMARY (state, payload) {
-      console.log('payload', payload)
       state.summaryMonths = payload
     },
     SET_YEARLY_SUMMARY (state, payload) {
