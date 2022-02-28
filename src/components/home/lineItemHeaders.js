@@ -47,6 +47,7 @@ export default [
   {
     field: 'committed',
     label: 'Commited',
-    emptyLabel: 'N/A'
+    emptyLabel: 'N/A',
+    borderRight: true
   }
 ]

@@ -1,5 +1,5 @@
 <template>
-  <ec-table :headers="headers" :rowItems="rowItems">
+  <ec-table :headers="headers" :rowItems="rowItems" :showSummaryRow="true" :summaryRowData="summaryRow">
     <template slot="startMonth" slot-scope="slotProps">
       {{formatDate(slotProps.rowData.startMonth)}}
     </template>
@@ -26,10 +26,13 @@ export default {
     return {
       headers: [],
       rowItems: [],
+      summaryRow: {},
       monthlyDataHeaders: [],
       yearlyDataHeaders: [],
       lineItemYearlyMapData: {},
-      lineItemMonthlyMapData: {}
+      lineItemMonthlyMapData: {},
+      monthlySummaryData: {},
+      yearlySummaryData: {}
     }
   },
   methods: {
@@ -58,6 +61,15 @@ export default {
         return this.lineItems
       }
     },
+    getSummaryRow(type) {
+      if (type === 'monthly') {
+        return Object.assign({}, this.monthlySummaryData)
+      } else if(type === 'yearly') {
+        return Object.assign({}, this.yearlySummaryData)
+      } else {
+        return {}
+      }
+    },
     createLineItemsMapData () {
       this.lineItems.forEach((itemData) => {
         this.lineItemYearlyMapData[itemData.productFLIId] = {}
@@ -71,6 +83,8 @@ export default {
           label: data.year
         })
 
+        this.yearlySummaryData[data.year] = data.summaryAmount
+
         data.lineData.forEach((lineData) => {
           this.lineItemYearlyMapData[lineData.recordId][data.year] = lineData.amount
         })
@@ -80,13 +94,16 @@ export default {
       let year = this.summaryMonths.startYear
       let month = this.summaryMonths.startMonth
 
-      this.summaryMonths.summaryAmount.forEach(() => {
+      this.summaryMonths.summaryAmount.forEach((amount) => {
         let field = `${month}/1/${year}`
         this.monthlyDataHeaders.push({
           field: field,
           label: field,
           type: 'date'
         })
+
+        this.monthlySummaryData[field] = amount
+
         if (month === 12) {
           month = 1,
           year = year + 1
@@ -124,12 +141,15 @@ export default {
 
       this.headers = this.getHeaders(type)
       this.rowItems = this.getData(type)
+      this.summaryRow = this.getSummaryRow(type)
+      console.log('row', this.summaryRow)
     },
     showMonthlySummary() {
       let type = this.showMonthlySummary ? 'monthly' : 'yearly'
 
       this.headers = this.getHeaders(type)
       this.rowItems = this.getData(type)
+      this.summaryRow = this.getSummaryRow(type)
     }
   },
   computed: {

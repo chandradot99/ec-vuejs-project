@@ -10,13 +10,18 @@
       </thead>
       <tbody>
         <tr v-for="(lineItem, index) in rowItems" :key="index">
-          <td v-for="(header, index) in headers" :key="index">
+          <td v-for="(header, index) in headers" :key="index" :class="{'border-right': header.borderRight}">
             <span v-if="$scopedSlots[header.field]">
               <slot :name="header.field" :rowData="lineItem"></slot>
             </span>
             <span v-else>
               {{lineItem[header.field] || (header.emptyLabel || '-')}}
             </span>
+          </td>
+        </tr>
+        <tr>
+          <td v-for="(header, index) in headers" :key="index" class="summary-row" :class="{'border-right': header.borderRight}">
+            {{summaryRowData[header.field]}}
           </td>
         </tr>
       </tbody>
@@ -36,6 +41,16 @@ export default {
     rowItems: {
       type: Array,
       required: true
+    },
+    showSummaryRow: {
+      type: Boolean,
+      default: false
+    },
+    summaryRowData: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   methods: {
@@ -95,6 +110,14 @@ export default {
             position: sticky;
             left: 0;
             z-index: 2;
+          }
+          &.summary-row {
+            height: 55px;
+            background-color: #f8f8f8;
+            border-bottom: 1px solid #ededed;
+          }
+          &.border-right {
+            border-right: 1px solid #ededed;
           }
         }
       }
